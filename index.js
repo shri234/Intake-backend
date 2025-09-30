@@ -1,28 +1,26 @@
 const express = require("express");
 const nodemailer = require("nodemailer");
-const sgTransport = require("nodemailer-sendgrid-transport");
 const cors = require("cors");
-require("dotenv").config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// SendGrid transport
-const transporter = nodemailer.createTransport(
-  sgTransport({
-    auth: {
-      api_key: process.env.SENDGRID_API_KEY,
-    },
-  })
-);
-
 app.post("/send-email", async (req, res) => {
   try {
     const { type, formData } = req.body;
 
+    const transporter = nodemailer.createTransport({
+      service: "gmail", // or 'smtp.example.com' for a custom host
+      auth: {
+        // 🛑 THESE ARE THE MISSING CREDENTIALS 🛑
+        user: "sriramm0406@gmail.com", // e.g., 'contact@intake.com'
+        pass: "unkq kjia wvuc yypa",
+      },
+    });
+
     await transporter.sendMail({
-      from: "no-reply@intakefoods.com",
+      from: `"Website Form" sriramm0406@gmail.com`,
       to: "hello@intakefoods.com",
       subject: `New ${
         type === "contact" ? "Corporate" : "Vendor"
